@@ -713,6 +713,34 @@ public class WindowInsetsCompat {
         return mImpl.isVisible(typeMask);
     }
 
+    /**
+     * Returns a copy of this WindowInsets with the system window insets fully consumed.
+     *
+     * <p>When running on platforms with API 19 and below, this method always returns {@code null}.
+     *
+     * @return A modified copy of this WindowInsets
+     * @deprecated Consuming of different parts individually of a {@link WindowInsetsCompat}
+     * instance is deprecated, since {@link WindowInsetsCompat} contains many different insets. Use
+     * {@link #CONSUMED} instead to stop dispatching insets.
+     */
+    @Deprecated
+    @NonNull
+    public WindowInsetsCompat consumeSystemWindowInsets2() {
+        return mImpl.consumeSystemWindowInsets();
+    }
+
+    /**
+     * Returns a copy of this WindowInsets with the system window insets fully consumed.
+     *
+     * <p>When running on platforms with API 19 and below, this method always returns {@code null}.
+     *
+     * @return A modified copy of this WindowInsets
+     */
+    @NonNull
+    public WindowInsetsCompat consumeInsets(@InsetsType int typeMask) {
+        return mImpl.consumeInsets(typeMask);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -771,6 +799,10 @@ public class WindowInsetsCompat {
 
         @NonNull
         WindowInsetsCompat consumeStableInsets() {
+            return mHost;
+        }
+
+        WindowInsetsCompat consumeInsets(@InsetsType int typeMask) {
             return mHost;
         }
 
@@ -1218,6 +1250,11 @@ public class WindowInsetsCompat {
         @Override
         WindowInsetsCompat consumeSystemWindowInsets() {
             return toWindowInsetsCompat(mPlatformInsets.consumeSystemWindowInsets());
+        }
+
+        @Override
+        WindowInsetsCompat consumeInsets(int typeMask) {
+            return super.consumeInsets(typeMask);
         }
 
         @Override
